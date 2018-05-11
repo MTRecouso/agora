@@ -4,3 +4,14 @@
 /robots.txt RobotsR GET
 
 / HomeR GET 
+
+/article ArticleR POST
+/article/#ArticleId  ArticleByIdR GET
+
+/user   UserSyR POST
+
+/reaction ReactionR POST
+/reaction/#ReactionId ReactionByIdR GET
+
+/view ViewR POST
+/view/#ViewId ViewByIdR GET
