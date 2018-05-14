@@ -30,3 +30,8 @@ putArticleByIdR articleId = do
     article <- requireJsonBody :: Handler Article
     runDB $ replace articleId article
     sendStatusJSON noContent204 (object[])
+
+deleteArticleByIdR :: ArticleId -> Handler Value
+deleteArticleByIdR articleId = do
+    runDB $ deleteCascade articleId
+    sendStatusJSON noContent204 (object[])
