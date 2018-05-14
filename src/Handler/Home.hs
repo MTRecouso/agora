@@ -29,10 +29,12 @@ postArticleR = do
 
 getArticleByIdR :: ArticleId -> Handler Value
 getArticleByIdR articleId = do
-    article <- runDB $ get404 articleId
+    article <- runDB $ get404 articleId 
+    author <- (runDB $ selectFirst [UserSyId ==. (articleAuthor article)] [])
+    authorName <- return (fmap (\x -> userSyUsername $ entityVal x) author) 
     listArticleReactions <- runDB $ selectList [ReactionArticle ==. articleId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. articleId] []
-    sendStatusJSON ok200 (object["resp" .= (article, listArticleViews, listArticleReactions)])
+    sendStatusJSON ok200 (object["resp" .= (article, authorName, listArticleViews, listArticleReactions)])
 
 postReactionR :: Handler Value
 postReactionR = do
@@ -44,7 +46,12 @@ postReactionR = do
 getReactionByIdR :: ReactionId -> Handler Value
 getReactionByIdR reactionId = do
     reaction <- runDB $ get404 reactionId
-    sendStatusJSON ok200 (object["resp" .= (reaction)])
+    rtype <- (runDB $ selectFirst [RTypeId ==. (reactionType reaction)] [])
+    user <-(runDB $ selectFirst [UserSyId ==. (reactionUser reaction)] [])
+    userName <- return (fmap (\x -> userSyUsername $ entityVal x) user) 
+    article <-(runDB $ selectFirst [ArticleId ==. (reactionArticle reaction)] [])
+    articleName <- return (fmap (\x -> articleTitle $ entityVal x) article)
+    sendStatusJSON ok200 (object["resp" .= (reaction, rtype, userName, articleName)])
 
 
 postViewR :: Handler Value
@@ -57,4 +64,8 @@ postViewR = do
 getViewByIdR :: ViewId -> Handler Value
 getViewByIdR viewId = do
     view <- runDB $ get404 viewId
-    sendStatusJSON ok200 (object["resp" .= (view)])
+    user <-(runDB $ selectFirst [UserSyId ==. (viewUser view)] [])
+    userName <- return (fmap (\x -> userSyUsername $ entityVal x) user) 
+    article <-(runDB $ selectFirst [ArticleId ==. (viewArticle view)] [])
+    articleName <- return (fmap (\x -> articleTitle $ entityVal x) article)
+    sendStatusJSON ok200 (object["resp" .= (view, userName, articleName)])
