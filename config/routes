@@ -6,7 +6,7 @@
 / HomeR GET 
 
 /article ArticleR POST
-/article/#ArticleId  ArticleByIdR GET
+/article/#ArticleId  ArticleByIdR GET PUT
 
 /user   UserSyR POST
 

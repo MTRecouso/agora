@@ -24,3 +24,9 @@ getArticleByIdR articleId = do
     listArticleReactions <- runDB $ selectList [ReactionArticle ==. articleId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. articleId] []
     sendStatusJSON ok200 (object["resp" .= (article, authorName, listArticleViews, listArticleReactions)])
+
+putArticleByIdR :: ArticleId -> Handler Value
+putArticleByIdR articleId = do
+    article <- requireJsonBody :: Handler Article
+    runDB $ replace articleId article
+    sendStatusJSON noContent204 (object[])
