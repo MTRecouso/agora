@@ -13,7 +13,7 @@ postArticleR :: Handler Value
 postArticleR = do
     article <- requireJsonBody :: Handler Article
     aid <- runDB $ insert article
-    sendStatusJSON created201 (object["resp" .= fromSqlKey aid])
+    sendStatusJSON created201 (object["id" .= fromSqlKey aid])
 
 
 getArticleByIdR :: ArticleId -> Handler Value
@@ -23,7 +23,7 @@ getArticleByIdR artId = do
     authorName <- return (fmap (\x -> userSyUsername $ entityVal x) author) 
     listArticleReactions <- runDB $ selectList [ReactionArticle ==. artId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. artId] []
-    sendStatusJSON ok200 (object["resp" .= (article, authorName, listArticleViews, listArticleReactions)])
+    sendStatusJSON ok200 (object["articles" .= (article, authorName, listArticleViews, listArticleReactions)])
 
 
 getArticleByAuthor :: UserSyId -> Handler Value
@@ -32,7 +32,7 @@ getArticleByAuthor authorId = do
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
-    sendStatusJSON ok200 (object["resp" .= (articles, listArticlesReactions, listArticlesViews)])
+    sendStatusJSON ok200 (object["author_articles" .= (articles, listArticlesReactions, listArticlesViews)])
 
 
 
