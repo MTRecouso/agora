@@ -13,4 +13,4 @@ postUserSyR :: Handler Value
 postUserSyR = do
     user <- requireJsonBody :: Handler UserSy
     uid <- runDB $ insert user
-    sendStatusJSON created201 (object["resp" .= fromSqlKey uid])
+    sendStatusJSON created201 (object["user" .= fromSqlKey uid])

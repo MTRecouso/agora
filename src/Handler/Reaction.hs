@@ -13,7 +13,7 @@ postReactionR :: Handler Value
 postReactionR = do
     reaction <- requireJsonBody :: Handler Reaction
     rid <- runDB $ insert reaction
-    sendStatusJSON created201 (object["resp" .= fromSqlKey rid])
+    sendStatusJSON created201 (object["id" .= fromSqlKey rid])
 
 
 getReactionByIdR :: ReactionId -> Handler Value
@@ -24,4 +24,4 @@ getReactionByIdR rId = do
     userName <- return (fmap (\x -> userSyUsername $ entityVal x) user) 
     article <-(runDB $ selectFirst [ArticleId ==. (reactionArticle reaction)] [])
     articleName <- return (fmap (\x -> articleTitle $ entityVal x) article)
-    sendStatusJSON ok200 (object["resp" .= (reaction, rtype, userName, articleName)])
+    sendStatusJSON ok200 (object["reaction" .= (reaction, rtype, userName, articleName)])
