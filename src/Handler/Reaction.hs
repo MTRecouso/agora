@@ -25,3 +25,9 @@ getReactionByIdR rId = do
     article <-(runDB $ selectFirst [ArticleId ==. (reactionArticle reaction)] [])
     articleName <- return (fmap (\x -> articleTitle $ entityVal x) article)
     sendStatusJSON ok200 (object["reaction" .= (reaction, rtype, userName, articleName)])
+
+putReactionByIdR :: ReactionId -> Handler Value
+putReactionByIdR rId = do
+    reaction <- requireJsonBody :: Handler Reaction
+    runDB $ replace rId reaction
+    sendStatusJSON noContent204 (object[])
