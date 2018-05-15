@@ -19,3 +19,4 @@
 /view ViewR POST
 /view/#ViewId ViewByIdR GET
 /view/user/#UserSyId ViewByUser GET
+/view/article/#ArticleId ViewByArticleR GET

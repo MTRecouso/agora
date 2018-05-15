@@ -25,6 +25,12 @@ getViewByIdR vId = do
     articleName <- return (fmap (\x -> articleTitle $ entityVal x) article)
     sendStatusJSON ok200 (object["resp" .= (view, userName, articleName)])
 
+getViewByArticleR :: ArticleId -> Handler Value
+getViewByArticleR aId = do
+    views <- runDB $ selectList [ViewArticle ==. aId] []
+    viewCount <- return $ length views
+    sendStatusJSON ok200 (object ["views" .= viewCount])
+
 getViewByUser :: UserSyId -> Handler Value
 getViewByUser uId = do
     views <- runDB $ selectList [ViewUser ==. uId] []
