@@ -14,7 +14,7 @@
 /user/#UserSyId UserSyByIdR GET
 
 /reaction ReactionR POST
-/reaction/#ReactionId ReactionByIdR GET PUT
+/reaction/#ReactionId ReactionByIdR GET PUT DELETE
 
 /view ViewR POST
 /view/#ViewId ViewByIdR GET

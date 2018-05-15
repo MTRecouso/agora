@@ -31,3 +31,8 @@ putReactionByIdR rId = do
     reaction <- requireJsonBody :: Handler Reaction
     runDB $ replace rId reaction
     sendStatusJSON noContent204 (object[])
+
+deleteReactionByIdR :: ReactionId  -> Handler Value
+deleteReactionByIdR rId = do
+    runDB $ delete rId
+    sendStatusJSON noContent204 (object[])
