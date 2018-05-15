@@ -8,6 +8,7 @@
 /article ArticleR POST
 /article/#ArticleId  ArticleByIdR GET PUT DELETE
 /article/author/#UserSyId ArticleByAuthor GET
+/article/search/#Text ArticleSearch GET
 
 /user   UserSyR POST
 

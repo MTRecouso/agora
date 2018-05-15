@@ -25,6 +25,16 @@ getArticleByIdR artId = do
     listArticleViews <- runDB $ selectList [ViewArticle ==. artId] []
     sendStatusJSON ok200 (object["articles" .= (article, authorName, listArticleViews, listArticleReactions)])
 
+like :: EntityField record Text -> Text -> Filter record
+like field val = Filter field (Left ("%" ++ val ++ "%")) (BackendSpecificFilter "ILIKE")
+
+getArticleSearch :: Text -> Handler Value
+getArticleSearch searchText = do
+    articles <- runDB $ selectList [ArticleTitle `like` searchText][]
+    artIds <- return $ fmap(\article -> entityKey article) articles
+    listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
+    listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
+    sendStatusJSON ok200 (object["search_articles" .= (articles, listArticlesReactions, listArticlesViews)])
 
 getArticleByAuthor :: UserSyId -> Handler Value
 getArticleByAuthor authorId = do
