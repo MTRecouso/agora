@@ -17,8 +17,8 @@ postViewR = do
 
 
 getViewByIdR :: ViewId -> Handler Value
-getViewByIdR viewId = do
-    view <- runDB $ get404 viewId
+getViewByIdR vId = do
+    view <- runDB $ get404 vId
     user <-(runDB $ selectFirst [UserSyId ==. (viewUser view)] [])
     userName <- return (fmap (\x -> userSyUsername $ entityVal x) user) 
     article <-(runDB $ selectFirst [ArticleId ==. (viewArticle view)] [])

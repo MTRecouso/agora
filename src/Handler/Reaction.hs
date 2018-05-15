@@ -17,8 +17,8 @@ postReactionR = do
 
 
 getReactionByIdR :: ReactionId -> Handler Value
-getReactionByIdR reactionId = do
-    reaction <- runDB $ get404 reactionId
+getReactionByIdR rId = do
+    reaction <- runDB $ get404 rId
     rtype <- (runDB $ selectFirst [RTypeId ==. (reactionType reaction)] [])
     user <-(runDB $ selectFirst [UserSyId ==. (reactionUser reaction)] [])
     userName <- return (fmap (\x -> userSyUsername $ entityVal x) user) 
