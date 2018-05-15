@@ -7,10 +7,11 @@
 
 /article ArticleR POST
 /article/#ArticleId  ArticleByIdR GET PUT DELETE
-/article/author/#UserSyId ArticleByAuthor GET
-/article/search/#Text ArticleSearch GET
+/article/author/#UserSyId ArticleByAuthorR GET
+/article/search/#Text ArticleSearchR GET
 
 /user   UserSyR POST
+/user/#UserSyId UserSyByIdR GET
 
 /reaction ReactionR POST
 /reaction/#ReactionId ReactionByIdR GET

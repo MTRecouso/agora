@@ -28,24 +28,24 @@ getArticleByIdR artId = do
 like :: EntityField record Text -> Text -> Filter record
 like field val = Filter field (Left ("%" ++ val ++ "%")) (BackendSpecificFilter "ILIKE")
 
-getArticleSearch :: Text -> Handler Value
-getArticleSearch searchText = do
+getArticleSearchR :: Text -> Handler Value
+getArticleSearchR searchText = do
     articles <- runDB $ selectList [ArticleTitle `like` searchText][]
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
     sendStatusJSON ok200 (object["search_articles" .= (articles, listArticlesReactions, listArticlesViews)])
 
-getArticleByAuthor :: UserSyId -> Handler Value
-getArticleByAuthor authorId = do
+getArticleByAuthorR :: UserSyId -> Handler Value
+getArticleByAuthorR authorId = do
     articles <- runDB $ selectList [ArticleAuthor ==. authorId] []
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
     sendStatusJSON ok200 (object["author_articles" .= (articles, listArticlesReactions, listArticlesViews)])
 
-
-
+--getArticleByTag :: TagId -> Handler Value
+--May add this in the future if the tag feature gets implemented
 
 putArticleByIdR :: ArticleId -> Handler Value
 putArticleByIdR artId = do

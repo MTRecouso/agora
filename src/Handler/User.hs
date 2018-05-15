@@ -14,3 +14,12 @@ postUserSyR = do
     user <- requireJsonBody :: Handler UserSy
     uid <- runDB $ insert user
     sendStatusJSON created201 (object["user" .= fromSqlKey uid])
+
+getUserSyByIdR :: UserSyId -> Handler Value
+getUserSyByIdR uId = do
+    user <- runDB $ get404 uId
+    userName <-  return $ userSyUsername user
+    userEmail <- return $ userSyEmail user
+    sendStatusJSON ok200 (object["user" .= (userName, userEmail)])
+    
+    
