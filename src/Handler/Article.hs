@@ -12,8 +12,8 @@ import Database.Persist.Postgresql
 postArticleR :: Handler Value
 postArticleR = do
     article <- requireJsonBody :: Handler Article
-    aid <- runDB $ insert article
-    sendStatusJSON created201 (object["id" .= fromSqlKey aid])
+    aId <- runDB $ insert article
+    sendStatusJSON created201 (object["id" .= fromSqlKey aId])
 
 
 getArticleByIdR :: ArticleId -> Handler Value

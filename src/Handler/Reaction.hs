@@ -12,8 +12,8 @@ import Database.Persist.Postgresql
 postReactionR :: Handler Value
 postReactionR = do
     reaction <- requireJsonBody :: Handler Reaction
-    rid <- runDB $ insert reaction
-    sendStatusJSON created201 (object["id" .= fromSqlKey rid])
+    rId <- runDB $ insert reaction
+    sendStatusJSON created201 (object["id" .= fromSqlKey rId])
 
 
 getReactionByIdR :: ReactionId -> Handler Value

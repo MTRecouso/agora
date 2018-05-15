@@ -12,8 +12,8 @@ import Database.Persist.Postgresql
 postUserSyR :: Handler Value
 postUserSyR = do
     user <- requireJsonBody :: Handler UserSy
-    uid <- runDB $ insert user
-    sendStatusJSON created201 (object["user" .= fromSqlKey uid])
+    uId <- runDB $ insert user
+    sendStatusJSON created201 (object["user" .= fromSqlKey uId])
 
 getUserSyByIdR :: UserSyId -> Handler Value
 getUserSyByIdR uId = do
