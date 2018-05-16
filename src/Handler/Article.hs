@@ -8,12 +8,25 @@ module Handler.Article where
 import Import
 import Network.HTTP.Types.Status
 import Database.Persist.Postgresql
+import Data.List ((!!))
 
 postArticleR :: Handler Value
 postArticleR = do
     article <- requireJsonBody :: Handler Article
     aId <- runDB $ insert article
     sendStatusJSON created201 (object["id" .= fromSqlKey aId])
+
+
+getArticlesToUser :: UserSyId -> Handler Value
+getArticlesToUser userId = do
+    views <- runDB $ selectList [ViewUser ==. userId] []
+    viewarticles <- return $ fmap(\view -> viewArticle $ entityVal view) views
+    viewedArticles  <- runDB $ selectList [ArticleId <-.viewarticles] [LimitTo 30]
+    tagsByFrequence <- return $ sort $ fmap (\tag -> articleTag $ entityVal tag) viewedArticles
+    tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
+    mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
+    pageArticles <- runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10] 
+    sendStatusJSON ok200 (object["articles" .= pageArticles])
 
 
 getArticleByIdR :: ArticleId -> Handler Value
