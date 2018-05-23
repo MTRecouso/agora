@@ -1,0 +1,7 @@
+.text-snippet{
+    font-size: 12px;
+}
+
+.greeting{
+    font-size: 1.2rem
+}

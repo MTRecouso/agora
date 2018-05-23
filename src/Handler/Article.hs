@@ -1,6 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 module Handler.Article where
@@ -9,6 +10,8 @@ import Import
 import Network.HTTP.Types.Status
 import Database.Persist.Postgresql
 import Data.List ((!!))
+import Data.Text.Encoding as TE
+import Data.CaseInsensitive as CI
 
 postArticleR :: Handler Value
 postArticleR = do
@@ -17,7 +20,7 @@ postArticleR = do
     sendStatusJSON created201 (object["id" .= fromSqlKey aId])
 
 
-getArticlesToUser :: UserSyId -> Handler Value
+getArticlesToUser :: UserSyId -> Handler Html
 getArticlesToUser userId = do
     views <- runDB $ selectList [ViewUser ==. userId] []
     viewarticles <- return $ fmap(\view -> viewArticle $ entityVal view) views
@@ -25,8 +28,13 @@ getArticlesToUser userId = do
     tagsByFrequence <- return $ sort $ fmap (\tag -> articleTag $ entityVal tag) viewedArticles
     tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
     mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
-    pageArticles <- runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10] 
-    sendStatusJSON ok200 (object["articles" .= pageArticles])
+    pageArticles <- runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10]
+    pc <- do
+        widgetToPageContent $(widgetFile "mainpage")
+    defaultLayout $ do
+        setTitle "Teste" 
+        $(widgetFile "layout-wrapper")
+    
 
 
 getArticleByIdR :: ArticleId -> Handler Value

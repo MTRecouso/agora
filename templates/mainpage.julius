@@ -1,0 +1,2 @@
+const elem  = $('.sidenav');
+const instance = M.Sidenav.init(elem)
