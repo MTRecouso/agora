@@ -8,33 +8,37 @@
                 <i class="black-text material-icons">menu
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    <a href="sass.html" class="black-text">
-                        <i class="material-icons left black-text">search
+                    <form action=@{ArticleSearchR}>
+                        <div class="input-field">
+                            <input name="search" type="search" placeholder="Pesquisar" required>
+                            <label class="label-icon" for="side-search">
+                                <i class="material-icons black-text">search
+                            <i class="material-icons">close
+                <li>
+                    <a href=@{ArticlesToUser userId} class="black-text">
+                        <i class="material-icons left black-text">dashboard
                         Explorar
                 <li>
-                    <a href="badges.html" class="black-text">
+                    <a href=@{ArticleByAuthorR userId} class="black-text">
                         <i class="material-icons left black-text">library_books
                         Meus textos
-                <li>
-                    <a href="badges.html" class="black-text">
-                        <i class="material-icons left black-text">insert_chart
-                        Estatísticas
     <ul id="slide-out" class="sidenav">
         <li>
-            <a href="#name">
-                <span class="black-text name">Ágora
+            <span class="black-text name">Ágora
         <li>
-            <a href="#name">
-                <i class="material-icons left black-text">search
+            <form action=@{ArticleSearchR}>
+                <div class="input-field">
+                    <input name="search" type="search" placeholder="Pesquisar" required>
+                    <label class="label-icon" for="search">
+                    <i class="material-icons black-text">search
+        <li>
+            <a href=@{ArticlesToUser userId} class="">
+                <i class="material-icons left black-text">dashboard
                 Explorar
         <li>
-            <a href="#name">
+            <a href=@{ArticleByAuthorR userId} class="black-text">
                 <i class="material-icons left black-text">library_books
                 Meus textos
-        <li>
-            <a href="#name">
-                <i class="material-icons left black-text">insert_chart
-                Estatísticas
 <main>
     <div class="section">
         <div class="row">
@@ -44,8 +48,12 @@
     <div class="row">
         $forall article <- pageArticles
             <div class="col s12 m12 l4">
+                <a href=@{ArticleByIdR $ entityKey article}> 
                     <h3 class="black-text center-align">#{articleTitle $ entityVal article}
                 <p>#{articleContent $ entityVal article}
+    <div class="fixed-action-btn">
+        <a href=@{ArticleR} class="btn-floating btn-large green">
+            <i class="large material-icons">mode_edit
 <footer class="page-footer grey lighten-4">
     <div class="row">
         <div class="col l6 s12">
@@ -54,9 +62,11 @@
         <div class="col l4 offset-l2 s12">
             <h5 class="black-text">Grupo
             <ul>
-                <li><a class="black-text"> Mateus Recouso
-                <li><a class="black-text"> Ana Marques
-                <li><a class="black-text"> Leandro Fróes
-            <br>
+                <li>
+                    <a class="black-text"> Mateus Recouso
+                <li>
+                    <a class="black-text"> Ana Marques
+                <li>
+                    <a class="black-text"> Leandro Fróes
     <div class="footer-copyright grey lighten-4">
         <p class="black-text"> 2018 Ágora

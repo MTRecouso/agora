@@ -5,10 +5,10 @@
 
 /home/#UserSyId ArticlesToUser GET 
 
-/article ArticleR POST
+/article ArticleR POST GET
 /article/#ArticleId  ArticleByIdR GET PUT DELETE
 /article/author/#UserSyId ArticleByAuthorR GET
-/article/search/#Text ArticleSearchR GET
+!/article/search ArticleSearchR GET
 
 /user   UserSyR POST
 /user/#UserSyId UserSyByIdR GET

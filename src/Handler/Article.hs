@@ -34,8 +34,11 @@ getArticlesToUser userId = do
     defaultLayout $ do
         setTitle "Teste" 
         $(widgetFile "layout-wrapper")
-    
 
+-- Stub for future form route
+getArticleR :: Handler Value
+getArticleR = do
+    sendStatusJSON noContent204 (object[])
 
 getArticleByIdR :: ArticleId -> Handler Value
 getArticleByIdR artId = do
@@ -49,8 +52,10 @@ getArticleByIdR artId = do
 like :: EntityField record Text -> Text -> Filter record
 like field val = Filter field (Left ("%" ++ val ++ "%")) (BackendSpecificFilter "ILIKE")
 
-getArticleSearchR :: Text -> Handler Value
-getArticleSearchR searchText = do
+getArticleSearchR :: Handler Value
+getArticleSearchR = do
+    searchParam <- lookupGetParam "search"
+    searchText <- return $ fromMaybe " " searchParam
     articles <- runDB $ selectList [ArticleTitle `like` searchText][]
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
