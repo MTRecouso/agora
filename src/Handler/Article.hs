@@ -29,11 +29,14 @@ getArticlesToUser userId = do
     tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
     mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
     pageArticles <- runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10]
-    pc <- do
-        widgetToPageContent $(widgetFile "mainpage")
+    pc <- return $ $(widgetFile "mainpage")
     defaultLayout $ do
-        setTitle "Teste" 
-        $(widgetFile "layout-wrapper")
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
+        addStylesheetRemote "https://fonts.googleapis.com/icon?family=Material+Icons"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"
+        setTitle "Ágora"
+        $(widgetFile "layout")
 
 -- Stub for future form route
 getArticleR :: Handler Value
@@ -52,7 +55,7 @@ getArticleByIdR artId = do
 like :: EntityField record Text -> Text -> Filter record
 like field val = Filter field (Left ("%" ++ val ++ "%")) (BackendSpecificFilter "ILIKE")
 
-getArticleSearchR :: Handler Value
+getArticleSearchR :: Handler Html
 getArticleSearchR = do
     searchParam <- lookupGetParam "search"
     searchText <- return $ fromMaybe " " searchParam
@@ -60,7 +63,11 @@ getArticleSearchR = do
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
-    sendStatusJSON ok200 (object["search_articles" .= (articles, listArticlesReactions, listArticlesViews)])
+    --to do: change navbar routes when user session is implemented
+    defaultLayout $ do
+        setTitle "Teste" 
+        $(widgetFile "searchresults")
+    --sendStatusJSON ok200 (object["search_articles" .= (articles, listArticlesReactions, listArticlesViews)])
 
 getArticleByAuthorR :: UserSyId -> Handler Value
 getArticleByAuthorR authorId = do
