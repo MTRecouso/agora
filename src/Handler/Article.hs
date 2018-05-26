@@ -64,10 +64,14 @@ getArticleSearchR = do
     listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
     --to do: change navbar routes when user session is implemented
+    pc <-return $ $(widgetFile "searchresults")
     defaultLayout $ do
-        setTitle "Teste" 
-        $(widgetFile "searchresults")
-    --sendStatusJSON ok200 (object["search_articles" .= (articles, listArticlesReactions, listArticlesViews)])
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
+        addStylesheetRemote "https://fonts.googleapis.com/icon?family=Material+Icons"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"
+        setTitle "Ágora"
+        $(widgetFile "layout")
 
 getArticleByAuthorR :: UserSyId -> Handler Value
 getArticleByAuthorR authorId = do
