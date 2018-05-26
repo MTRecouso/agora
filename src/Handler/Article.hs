@@ -43,14 +43,22 @@ getArticleR :: Handler Value
 getArticleR = do
     sendStatusJSON noContent204 (object[])
 
-getArticleByIdR :: ArticleId -> Handler Value
+getArticleByIdR :: ArticleId -> Handler Html
 getArticleByIdR artId = do
     article <- runDB $ get404 artId 
     author <- (runDB $ selectFirst [UserSyId ==. (articleAuthor article)] [])
     authorName <- return (fmap (\x -> userSyUsername $ entityVal x) author) 
     listArticleReactions <- runDB $ selectList [ReactionArticle ==. artId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. artId] []
-    sendStatusJSON ok200 (object["articles" .= (article, authorName, listArticleViews, listArticleReactions)])
+    pc <-return $ $(widgetFile "article")
+    defaultLayout $ do
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
+        addStylesheetRemote "https://fonts.googleapis.com/icon?family=Material+Icons"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"
+        setTitle "Ágora"
+        $(widgetFile "layout")
+  
 
 like :: EntityField record Text -> Text -> Filter record
 like field val = Filter field (Left ("%" ++ val ++ "%")) (BackendSpecificFilter "ILIKE")
