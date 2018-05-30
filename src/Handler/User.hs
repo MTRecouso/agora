@@ -11,10 +11,6 @@ import Network.HTTP.Types.Status
 import Database.Persist.Postgresql
 import qualified Data.ByteString.Char8 as BS (pack, unpack)
 import Crypto.BCrypt
---import Yesod.Auth.HashDB (setPassword,userPasswordHash, setPasswordHash, validatePass, HashDBUser)
---import Yesod.Auth.Util.PasswordStore (makePassword, strengthenPassword,
-                                             -- verifyPassword, passwordStrength)
-
 
 
 postUserSyR :: Handler Value
@@ -24,6 +20,26 @@ postUserSyR = do
     hashUser <- return $ UserSy (userSyEmail user) (pack $ BS.unpack hashedPass) (userSyUsername user)
     userId <- runDB $ insert hashUser
     sendStatusJSON created201 (object ["resp" .= (userId)])
+
+
+postUserLoginR :: Handler Html
+postUserLoginR = do
+    (email,password) <- requireJsonBody :: Handler (Text,Text)
+    maybeUser <- runDB $ getBy $ UniqueEmail email
+    case maybeUser of
+        Just user -> do
+            loginAttempt <- return $ validatePassword (BS.pack $ unpack $ userSyPassword $ entityVal user) (BS.pack $ unpack password)
+            case loginAttempt of
+                True -> do 
+                    setSession "ID" $ pack $ show $ entityKey user 
+                    sess <- getSession
+                    defaultLayout
+                        [whamlet|
+                            #{show sess}
+                        |]
+                _ -> sendStatusJSON ok200 (object ["resp" .= ("Login não autorizado" :: Text)] )
+        _ -> sendStatusJSON status404 (object ["resp" .= ("Usuario não cadastrado" :: Text)] )
+
 
 getUserSyByIdR :: UserSyId -> Handler Value
 getUserSyByIdR uId = do

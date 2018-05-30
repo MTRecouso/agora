@@ -12,6 +12,7 @@
 
 /user   UserSyR POST
 /user/#UserSyId UserSyByIdR GET
+/login  UserLoginR POST
 
 /reaction ReactionR POST
 /reaction/#ReactionId ReactionByIdR GET PUT DELETE
