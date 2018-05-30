@@ -2,7 +2,7 @@
     <div class="section">
         <div class="row">
             <div class="col s12">
-                <p class="center-align greeting">Bem vindo Usuário. Esses são os textos que separamos para você hoje
+                <p class="center-align greeting">Bem vindo Usuário #{userSyUsername user}. Esses são os textos que separamos para você hoje
     <div class="divider">
     <div class="row">
         $forall article <- pageArticles

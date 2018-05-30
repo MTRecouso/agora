@@ -31,12 +31,8 @@ postUserLoginR = do
             loginAttempt <- return $ validatePassword (BS.pack $ unpack $ userSyPassword $ entityVal user) (BS.pack $ unpack password)
             case loginAttempt of
                 True -> do 
-                    setSession "ID" $ pack $ show $ entityKey user 
-                    sess <- getSession
-                    defaultLayout
-                        [whamlet|
-                            #{show sess}
-                        |]
+                    setSession "ID" $ pack $ show $ fromSqlKey $ entityKey user
+                    redirect ArticlesToUser
                 _ -> sendStatusJSON ok200 (object ["resp" .= ("Login não autorizado" :: Text)] )
         _ -> sendStatusJSON status404 (object ["resp" .= ("Usuario não cadastrado" :: Text)] )
 

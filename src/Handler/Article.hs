@@ -12,6 +12,7 @@ import Database.Persist.Postgresql
 import Data.List ((!!))
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
+import Prelude (read)
 
 postArticleR :: Handler Value
 postArticleR = do
@@ -20,8 +21,11 @@ postArticleR = do
     sendStatusJSON created201 (object["id" .= fromSqlKey aId])
 
 
-getArticlesToUser :: UserSyId -> Handler Html
-getArticlesToUser userId = do
+getArticlesToUser :: Handler Html
+getArticlesToUser = do
+    (Just idText) <- lookupSession "ID"
+    userId <- return $ toSqlKey (read (unpack idText) ::Int64)
+    user <- runDB $ get404 userId
     views <- runDB $ selectList [ViewUser ==. userId] []
     viewarticles <- return $ fmap(\view -> viewArticle $ entityVal view) views
     viewedArticles  <- runDB $ selectList [ArticleId <-.viewarticles] [LimitTo 30]

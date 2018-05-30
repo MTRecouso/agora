@@ -3,7 +3,7 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/home/#UserSyId ArticlesToUser GET 
+/home ArticlesToUser GET 
 
 /article ArticleR POST GET
 /article/#ArticleId  ArticleByIdR GET PUT DELETE
