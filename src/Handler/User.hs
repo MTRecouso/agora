@@ -36,6 +36,13 @@ postUserLoginR = do
                 _ -> sendStatusJSON ok200 (object ["resp" .= ("Login não autorizado" :: Text)] )
         _ -> sendStatusJSON status404 (object ["resp" .= ("Usuario não cadastrado" :: Text)] )
 
+getLoginPageR :: Handler Html
+getLoginPageR = do
+    defaultLayout $ do
+        [whamlet|
+            <h1>TESTE
+        |]
+
 
 getUserSyByIdR :: UserSyId -> Handler Value
 getUserSyByIdR uId = do

@@ -23,7 +23,12 @@ postArticleR = do
 
 getArticlesToUser :: Handler Html
 getArticlesToUser = do
-    (Just idText) <- lookupSession "ID"
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+                    (Just id) -> do
+                        return id
+                    _ -> do
+                        redirect LoginPageR
     userId <- return $ toSqlKey (read (unpack idText) ::Int64)
     user <- runDB $ get404 userId
     views <- runDB $ selectList [ViewUser ==. userId] []
