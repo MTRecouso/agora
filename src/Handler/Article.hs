@@ -34,10 +34,15 @@ getArticlesToUser = do
     views <- runDB $ selectList [ViewUser ==. userId] []
     viewarticles <- return $ fmap(\view -> viewArticle $ entityVal view) views
     viewedArticles  <- runDB $ selectList [ArticleId <-.viewarticles] [LimitTo 30]
-    tagsByFrequence <- return $ sort $ fmap (\tag -> articleTag $ entityVal tag) viewedArticles
-    tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
-    mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
-    pageArticles <- runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10]
+    pageArticles <- case viewedArticles of
+        [] -> do
+            runDB $ selectList [] [Desc ArticleId, LimitTo 10]
+
+        _ -> do 
+            tagsByFrequence <- return $ sort $ fmap (\tag -> articleTag $ entityVal tag) viewedArticles
+            tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
+            mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
+            runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10]
     pc <- return $ $(widgetFile "mainpage")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
