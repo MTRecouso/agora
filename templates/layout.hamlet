@@ -1,59 +1,59 @@
 
-    <header>
-        <nav class="main-nav">
-            <div class="nav-wrapper grey lighten-4">
-                <div class="brand-logo">
-                    <span class="black-text">
-                <a href="#" data-target="slide-out" class="sidenav-trigger">
-                    <i class="black-text material-icons">menu
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li>
-                        <form action=@{ArticleSearchR}>
-                            <div class="input-field">
-                                <input name="search" type="search" placeholder="Pesquisar" required>
-                                <label class="label-icon" for="side-search">
-                                    <i class="material-icons black-text">search
-                                <i class="material-icons">close
-                    <li>
-                        <a href="#" class="black-text">
-                            <i class="material-icons left black-text">dashboard
-                            Explorar
-                    <li>
-                        <a href="#" class="black-text">
-                            <i class="material-icons left black-text">library_books
-                            Meus textos
-        <ul id="slide-out" class="sidenav">
-            <li>
-                <span class="black-text name">Ágora
-            <li>
-                <form action=@{ArticleSearchR}>
-                    <div class="input-field">
-                        <input name="search" type="search" placeholder="Pesquisar" required>
-                        <label class="label-icon" for="search">
-                        <i class="material-icons black-text">search
-            <li>
-                <a href="#" class="">
-                    <i class="material-icons left black-text">dashboard
-                    Explorar
-            <li>
-                <a href="#" class="black-text">
-                    <i class="material-icons left black-text">library_books
-                    Meus textos
-    <main>
-        ^{pc}
-    <footer class="page-footer grey lighten-4">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="black-text">Ágora
-                <p class="black-text">O Ágora é um espaço para pessoas que queiram compartilhar seus conhecimentos com o mundo
-            <div class="col l4 offset-l2 s12">
-                <h5 class="black-text">Grupo
-                <ul>
-                    <li>
-                        <a class="black-text"> Mateus Recouso
-                    <li>
-                        <a class="black-text"> Ana Marques
-                    <li>
-                        <a class="black-text"> Leandro Fróes
-        <div class="footer-copyright grey lighten-4">
-            <p class="black-text"> 2018 Ágora
+<header>
+    <nav class="main-nav">
+        <div class="nav-wrapper grey lighten-4">
+            <div class="brand-logo">
+                <span class="black-text">
+            <a href="#" data-target="slide-out" class="sidenav-trigger">
+                <i class="black-text material-icons">menu
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    <form action=@{ArticleSearchR}>
+                        <div class="input-field">
+                            <input name="search" type="search" placeholder="Pesquisar" required>
+                            <label class="label-icon" for="side-search">
+                                <i class="material-icons black-text">search
+                            <i class="material-icons">close
+                <li>
+                    <a href="#" class="black-text">
+                        <i class="material-icons left black-text">dashboard
+                        Explorar
+                <li>
+                    <a href="#" class="black-text">
+                        <i class="material-icons left black-text">library_books
+                        Meus textos
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <span class="black-text name">Ágora
+        <li>
+            <form action=@{ArticleSearchR}>
+                <div class="input-field">
+                    <input name="search" type="search" placeholder="Pesquisar" required>
+                    <label class="label-icon" for="search">
+                    <i class="material-icons black-text">search
+        <li>
+            <a href="#" class="">
+                <i class="material-icons left black-text">dashboard
+                Explorar
+        <li>
+            <a href="#" class="black-text">
+                <i class="material-icons left black-text">library_books
+                Meus textos
+<main>
+    ^{pc}
+<footer class="page-footer grey lighten-4">
+    <div class="row">
+        <div class="col l6 s12">
+            <h5 class="black-text">Ágora
+            <p class="black-text">O Ágora é um espaço para pessoas que queiram compartilhar seus conhecimentos com o mundo
+        <div class="col l4 offset-l2 s12">
+            <h5 class="black-text">Grupo
+            <ul>
+                <li>
+                    <a class="black-text"> Mateus Recouso
+                <li>
+                    <a class="black-text"> Ana Marques
+                <li>
+                    <a class="black-text"> Leandro Fróes
+    <div class="footer-copyright grey lighten-4">
+        <p class="black-text"> 2018 Ágora
