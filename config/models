@@ -3,6 +3,7 @@ UserSy json
     password Text
     username Text
     UniqueEmail email
+    deriving Show
 
 Article json
     title Text
