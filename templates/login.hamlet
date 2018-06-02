@@ -22,5 +22,5 @@
                         <button class="btn-large center-align blue waves-effect waves-light" type="submit" name="action">Entrar
                             <i class="material-icons right">send
                         <p>Não possui uma conta? 
-                        <a href="#">Cadastre-se              
+                        <a href=@{SignupPageR}>Cadastre-se              
                 

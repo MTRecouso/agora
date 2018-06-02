@@ -5,6 +5,7 @@
 
 /   LoginPageR GET
    
+/signup SignupPageR GET
 /login UserLoginR POST
 /home ArticlesToUser GET 
 
