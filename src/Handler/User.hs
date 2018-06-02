@@ -17,11 +17,29 @@ import Crypto.BCrypt
 
 postUserSyR :: Handler Value
 postUserSyR = do
-    user <- requireJsonBody :: Handler UserSy
-    (Just hashedPass) <- liftIO $ hashPasswordUsingPolicy slowerBcryptHashingPolicy (BS.pack $ unpack $ userSyPassword user)
-    hashUser <- return $ UserSy (userSyEmail user) (pack $ BS.unpack hashedPass) (userSyUsername user)
+    maybeEmail<- lookupPostParam "email"
+    maybePassword <- lookupPostParam "password"
+    maybeUsername <- lookupPostParam "username"
+    email <- case maybeEmail of
+                Nothing -> do 
+                    sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+                (Just em) -> do
+                    return em
+    username <- case maybeUsername of
+                    Nothing -> do
+                        sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+                    (Just usern) -> do
+                         return usern
+    password <- case maybePassword of
+                    Nothing -> do
+                        sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+                    (Just pass) -> do
+                         return pass
+    (Just hashedPass) <- liftIO $ hashPasswordUsingPolicy slowerBcryptHashingPolicy (BS.pack $ unpack $ password)
+    hashUser <- return $ UserSy (email) (pack $ BS.unpack hashedPass) (username)
     userId <- runDB $ insert hashUser
-    sendStatusJSON created201 (object ["resp" .= (userId)])
+    setSession "ID" $ pack $ show $ fromSqlKey $ userId
+    redirect ArticlesToUser
 
 
 postUserLoginR :: Handler Html
