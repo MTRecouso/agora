@@ -13,6 +13,8 @@ import qualified Data.ByteString.Char8 as BS (pack, unpack)
 import Crypto.BCrypt
 
 
+
+
 postUserSyR :: Handler Value
 postUserSyR = do
     user <- requireJsonBody :: Handler UserSy
@@ -24,7 +26,18 @@ postUserSyR = do
 
 postUserLoginR :: Handler Html
 postUserLoginR = do
-    (email,password) <- requireJsonBody :: Handler (Text,Text)
+    maybeEmail<- lookupPostParam "email"
+    maybePassword <- lookupPostParam "password"
+    email <- case maybeEmail of
+                Nothing -> do 
+                    sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+                (Just em) -> do
+                    return em
+    password <- case maybePassword of
+                    Nothing -> do
+                        sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+                    (Just pass) -> do
+                         return pass
     maybeUser <- runDB $ getBy $ UniqueEmail email
     case maybeUser of
         Just user -> do
@@ -42,7 +55,7 @@ getLoginPageR = do
         [whamlet|
             <h1>TESTE
         |]
-
+   
 
 getUserSyByIdR :: UserSyId -> Handler Value
 getUserSyByIdR uId = do
