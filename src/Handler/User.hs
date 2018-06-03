@@ -10,62 +10,46 @@ import Import
 import Network.HTTP.Types.Status
 import Database.Persist.Postgresql
 import qualified Data.ByteString.Char8 as BS (pack, unpack)
+import Data.Maybe (fromJust)
 import Crypto.BCrypt
-
-
-
+import Funcs
 
 postUserSyR :: Handler Value
 postUserSyR = do
     maybeEmail<- lookupPostParam "email"
     maybePassword <- lookupPostParam "password"
     maybeUsername <- lookupPostParam "username"
-    email <- case maybeEmail of
-                Nothing -> do 
-                    sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
-                (Just em) -> do
-                    return em
-    username <- case maybeUsername of
-                    Nothing -> do
-                        sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
-                    (Just usern) -> do
-                         return usern
-    password <- case maybePassword of
-                    Nothing -> do
-                        sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
-                    (Just pass) -> do
-                         return pass
-    (Just hashedPass) <- liftIO $ hashPasswordUsingPolicy slowerBcryptHashingPolicy (BS.pack $ unpack $ password)
-    hashUser <- return $ UserSy (email) (pack $ BS.unpack hashedPass) (username)
-    userId <- runDB $ insert hashUser
-    setSession "ID" $ pack $ show $ fromSqlKey $ userId
-    redirect ArticlesToUser
+    hasReqParam <- return $ hasRequiredParameters [maybeEmail, maybePassword, maybeUsername]
+    case hasReqParam of
+        False -> do
+            sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+        True -> do
+            (Just hashedPass) <- liftIO $ hashPasswordUsingPolicy slowerBcryptHashingPolicy (BS.pack $ unpack $ fromJust maybePassword)
+            hashUser <- return $ UserSy (fromJust maybeEmail) (pack $ BS.unpack hashedPass) (fromJust maybeUsername)
+            userId <- runDB $ insert hashUser
+            setSession "ID" $ keyToText $ userId
+            redirect ArticlesToUser
 
-
-postUserLoginR :: Handler Html
+postUserLoginR :: Handler Value
 postUserLoginR = do
     maybeEmail<- lookupPostParam "email"
     maybePassword <- lookupPostParam "password"
-    email <- case maybeEmail of
-                Nothing -> do 
-                    sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
-                (Just em) -> do
-                    return em
-    password <- case maybePassword of
-                    Nothing -> do
-                        sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
-                    (Just pass) -> do
-                         return pass
-    maybeUser <- runDB $ getBy $ UniqueEmail email
-    case maybeUser of
-        Just user -> do
-            loginAttempt <- return $ validatePassword (BS.pack $ unpack $ userSyPassword $ entityVal user) (BS.pack $ unpack password)
-            case loginAttempt of
-                True -> do 
-                    setSession "ID" $ pack $ show $ fromSqlKey $ entityKey user
-                    redirect ArticlesToUser
-                _ -> sendStatusJSON ok200 (object ["resp" .= ("Login não autorizado" :: Text)] )
-        _ -> sendStatusJSON status404 (object ["resp" .= ("Usuario não cadastrado" :: Text)] )
+    hasReqParam <- return $ hasRequiredParameters [maybeEmail, maybePassword]
+    case hasReqParam of
+        False -> do
+            sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+        True -> do
+            maybeUser <- runDB $ getBy $ UniqueEmail $ fromJust maybeEmail
+            case maybeUser of
+                Just user -> do
+                    loginAttempt <- return $ validatePassword (BS.pack $ unpack $ userSyPassword $ entityVal user) (BS.pack $ unpack $ fromJust maybePassword)
+                    case loginAttempt of
+                        True -> do 
+                            setSession "ID" $ keyToText $ entityKey user
+                            redirect ArticlesToUser
+                        _ -> sendStatusJSON ok200 (object ["resp" .= ("Login não autorizado" :: Text)] )
+                _ -> sendStatusJSON status404 (object ["resp" .= ("Usuario não cadastrado" :: Text)] )
+    
 
 getLoginPageR :: Handler Html
 getLoginPageR = do

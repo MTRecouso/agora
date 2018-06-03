@@ -7,17 +7,17 @@
                         <div class="divider">
                         <div class="section">
                             <div class="input-field">
-                                <input id="signup-email" name="email" type="text" class="validate">
+                                <input id="signup-email" name="email" type="text" class="validate" required>
                                 <label for="signup-email">
                                     <i class="material-icons">mail
                                     Email
                             <div class="input-field">
-                                <input id="signup-username" name="username" type="text" class="validate">
+                                <input id="signup-username" name="username" type="text" class="validate" required>
                                 <label for="signup-username">
                                     <i class="material-icons">person
                                     Nome de Usuário
                             <div class="input-field">
-                                <input id="signup-password" name="password" type="password" class="validate">
+                                <input id="signup-password" name="password" type="password" class="validate" required>
                                 <label for="signup-password">
                                     <i class="material-icons">lock
                                     Senha

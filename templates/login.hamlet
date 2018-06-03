@@ -9,12 +9,12 @@
             <div class="section">
                 <form action=@{UserLoginR} method="post">
                     <div class="input-field">
-                        <input id="login-email" name="email" type="text" class="validate">
+                        <input id="login-email" name="email" type="text" class="validate" required>
                         <label for="login-email">
                             <i class="material-icons">mail
                             E-mail
                     <div class="input-field"> 
-                        <input id="login-password" name="password" type="password" class="validate">
+                        <input id="login-password" name="password" type="password" class="validate" required>
                         <label for="login-password">
                             <i class="material-icons">lock
                             Senha

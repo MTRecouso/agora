@@ -12,7 +12,7 @@ import Database.Persist.Postgresql
 import Data.List ((!!))
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
-import Prelude (read)
+import Funcs
 
 postArticleR :: Handler Value
 postArticleR = do
@@ -25,11 +25,11 @@ getArticlesToUser :: Handler Html
 getArticlesToUser = do
     maybeId <- lookupSession "ID"
     idText <- case maybeId of
-                    (Just id) -> do
-                        return id
+                    (Just idt) -> do
+                        return idt
                     _ -> do
                         redirect LoginPageR
-    userId <- return $ toSqlKey (read (unpack idText) ::Int64)
+    userId <- return $ textToKey idText
     user <- runDB $ get404 userId
     views <- runDB $ selectList [ViewUser ==. userId] []
     viewarticles <- return $ fmap(\view -> viewArticle $ entityVal view) views
