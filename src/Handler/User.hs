@@ -22,13 +22,18 @@ postUserSyR = do
     hasReqParam <- return $ hasRequiredParameters [maybeEmail, maybePassword, maybeUsername]
     case hasReqParam of
         False -> do
-            sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+            invalidArgs $ [(pack "Formato inválido")]
         True -> do
             (Just hashedPass) <- liftIO $ hashPasswordUsingPolicy slowerBcryptHashingPolicy (BS.pack $ unpack $ fromJust maybePassword)
             hashUser <- return $ UserSy (fromJust maybeEmail) (pack $ BS.unpack hashedPass) (fromJust maybeUsername)
-            userId <- runDB $ insert hashUser
-            setSession "ID" $ keyToText $ userId
-            redirect ArticlesToUser
+            maybeUserId <- runDB $ insertUnique hashUser
+            case maybeUserId of
+                (Just userId) -> do
+                    setSession "ID" $ keyToText $ userId
+                    redirect ArticlesToUser
+                Nothing -> do
+                    setMessage $ toHtml ("Já existe um usuário com este e-mail" :: String)
+                    redirect SignupPageR
 
 postUserLoginR :: Handler Value
 postUserLoginR = do
@@ -37,7 +42,7 @@ postUserLoginR = do
     hasReqParam <- return $ hasRequiredParameters [maybeEmail, maybePassword]
     case hasReqParam of
         False -> do
-            sendStatusJSON status404 (object ["resp" .= ("Formato inválido" :: Text)] )
+            invalidArgs $ [(pack "Formato inválido")]
         True -> do
             maybeUser <- runDB $ getBy $ UniqueEmail $ fromJust maybeEmail
             case maybeUser of
@@ -47,12 +52,16 @@ postUserLoginR = do
                         True -> do 
                             setSession "ID" $ keyToText $ entityKey user
                             redirect ArticlesToUser
-                        _ -> sendStatusJSON ok200 (object ["resp" .= ("Login não autorizado" :: Text)] )
-                _ -> sendStatusJSON status404 (object ["resp" .= ("Usuario não cadastrado" :: Text)] )
-    
+                        _ -> do
+                            setMessage $ toHtml ("Login não autorizado" :: String)
+                            redirect LoginPageR
+                _ -> do 
+                    setMessage $ toHtml ("Login não autorizado" :: String)
+                    redirect LoginPageR
 
 getLoginPageR :: Handler Html
 getLoginPageR = do
+    maybeMsg <- getMessage
     pc <- return $ $(widgetFile "login")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
@@ -64,6 +73,7 @@ getLoginPageR = do
 
 getSignupPageR :: Handler Html
 getSignupPageR = do
+    maybeMsg <- getMessage
     pc <- return $ $(widgetFile "signup")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"

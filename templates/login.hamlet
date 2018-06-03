@@ -5,6 +5,9 @@
         <div class="col s12 m6 offset-m3 offset-l3 l6 z-depth-1 white semi-opaque">
             <div class="section">
                 <h1 class="center-align">Entrar
+                $maybe msg <- maybeMsg
+                    <div class="red lighten-4">
+                        <p>#{msg}</p>
             <div class="divider">
             <div class="section">
                 <form action=@{UserLoginR} method="post">

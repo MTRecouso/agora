@@ -3,6 +3,9 @@
                 <div class="col s12 m6 offset-m3 offset-l3 l6 z-depth-1 white semi-opaque">
                     <div class="section">
                         <h1 class="center-align">Cadastrar
+                        $maybe msg <- maybeMsg
+                            <div class="red lighten-4">
+                                <p>#{msg}</p>
                     <form action=@{UserSyR} method="post">
                         <div class="divider">
                         <div class="section">
