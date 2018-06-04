@@ -8,4 +8,12 @@
     $.post('@{ViewR}',view, function(res){
       console.log(res.resp)
     })
+
+    $( '#favorite' ).click(function(event) {
+      const favorite = JSON.stringify({user: user_id, article: art_id})
+      $.post('@{FavoriteR}',favorite, function(res){
+        console.log(res.id)
+      })
+    });
   });
+

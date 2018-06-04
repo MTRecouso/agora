@@ -19,20 +19,10 @@
                 <p>#{articleContent article}
 
     <div class="fixed-action-btn">
-        <a id="react" class="btn-floating btn-large blue">
-            <i class="large material-icons">sentiment_neutral
-        <ul>
-           <li>
-                <a class="btn-floating red reaction">
-                    <i class="material-icons">favorite
-            <li>
-                <a class="btn-floating green reaction">
-                    <i class="material-icons">sentiment_very_satisfied
-            <li>
-                <a class="btn-floating yellow reaction">
-                    <i class="material-icons">lightbulb_outline
-            <li>
-                <a class="btn-floating grey reaction">
-                    <i class="material-icons">sentiment_very_dissatisfied
-   
+        $maybe favorite <- hasFavorite
+            <a id="favorite" class="btn-floating btn-large red favorited">
+                <i class="material-icons">favorite
+        $nothing
+            <a id="favorite" class="btn-floating btn-large grey">
+                <i class="material-icons red-text">favorite
       

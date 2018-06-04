@@ -21,10 +21,7 @@ View json
     article ArticleId
     UniqueView user article
 
-Reaction json
+Favorite json
     user UserSyId
     article ArticleId
-    type RTypeId
-
-RType json
-    name Text
+    UniqueFav user article

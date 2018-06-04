@@ -69,8 +69,8 @@ getArticleByIdR artId = do
     user <- runDB $ get404 userId
     article <- runDB $ get404 artId
     author <- (runDB $ selectFirst [UserSyId ==. (articleAuthor article)] [])
-    authorName <- return (fmap (\x -> userSyUsername $ entityVal x) author) 
-    listArticleReactions <- runDB $ selectList [ReactionArticle ==. artId] []
+    hasFavorite <- runDB $ getBy (UniqueFav userId artId)
+    listArticleFavorites <- runDB $ selectList [FavoriteArticle ==. artId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. artId] []
     pc <-return $ $(widgetFile "article")
     defaultLayout $ do
@@ -91,7 +91,7 @@ getArticleSearchR = do
     searchText <- return $ fromMaybe " " searchParam
     articles <- runDB $ selectList [ArticleTitle `like` searchText][]
     artIds <- return $ fmap(\article -> entityKey article) articles
-    listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
+    listArticlesFavorites <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
     --to do: change navbar routes when user session is implemented
     pc <-return $ $(widgetFile "searchresults")
@@ -108,7 +108,7 @@ getArticleByAuthorR authorId = do
     author <- runDB $ get404 authorId     
     articles <- runDB $ selectList [ArticleAuthor ==. authorId] []
     artIds <- return $ fmap(\article -> entityKey article) articles
-    listArticlesReactions <- runDB $ selectList [ViewArticle <-. artIds] []
+    listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
     pc <-return $ $(widgetFile "author")
     defaultLayout $ do
