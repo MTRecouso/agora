@@ -7,6 +7,7 @@
    
 /signup SignupPageR GET
 /login UserLoginR POST
+/logout UserLogoutR GET
 /home ArticlesToUser GET 
 
 /article ArticleR POST GET

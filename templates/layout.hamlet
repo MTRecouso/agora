@@ -22,6 +22,10 @@
                     <a href="#" class="black-text">
                         <i class="material-icons left black-text">library_books
                         Meus textos
+                <li>
+                    <a href=@{UserLogoutR} class="black-text">
+                        <i class="material-icons left black-text">exit_to_app
+                        Logout
     <ul id="slide-out" class="sidenav">
         <li>
             <span class="black-text name">Ágora
@@ -39,6 +43,10 @@
             <a href="#" class="black-text">
                 <i class="material-icons left black-text">library_books
                 Meus textos
+        <li>
+            <a href=@{UserLogoutR} class="black-text">
+                        <i class="material-icons left black-text">exit_to_app
+                        Logout
 <main>
     ^{pc}
 <footer class="page-footer grey lighten-4">
