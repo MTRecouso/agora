@@ -19,6 +19,7 @@ Tag
 View json
     user UserSyId
     article ArticleId
+    UniqueView user article
 
 Reaction json
     user UserSyId

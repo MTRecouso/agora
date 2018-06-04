@@ -59,7 +59,15 @@ getArticleR = do
 
 getArticleByIdR :: ArticleId -> Handler Html
 getArticleByIdR artId = do
-    article <- runDB $ get404 artId 
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+                    (Just idt) -> do
+                        return idt
+                    _ -> do
+                        redirect LoginPageR
+    userId <- return $ (textToKey idText :: UserSyId)
+    user <- runDB $ get404 userId
+    article <- runDB $ get404 artId
     author <- (runDB $ selectFirst [UserSyId ==. (articleAuthor article)] [])
     authorName <- return (fmap (\x -> userSyUsername $ entityVal x) author) 
     listArticleReactions <- runDB $ selectList [ReactionArticle ==. artId] []

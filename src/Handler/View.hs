@@ -12,7 +12,7 @@ import Database.Persist.Postgresql
 postViewR :: Handler Value
 postViewR = do
     view <- requireJsonBody :: Handler View
-    vId <- runDB $ insert view
+    vId <- runDB $ insert400 view
     sendStatusJSON created201 (object["resp" .= fromSqlKey vId])
 
 

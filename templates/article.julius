@@ -1,4 +1,11 @@
  $(document).ready(function(){
     $('.fixed-action-btn').floatingActionButton();
     $('.collapsible').collapsible();
+    const user_id = parseInt($('#user-id').val())
+    const art_id = parseInt($('#art-id').val())
+    const view = JSON.stringify({user: user_id, article: art_id})
+    console.log(view)
+    $.post('@{ViewR}',view, function(res){
+      console.log(res.resp)
+    })
   });

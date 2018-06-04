@@ -1,4 +1,6 @@
 <main>
+    <input type="hidden" id="user-id" value=#{fromSqlKey userId}>
+    <input type="hidden" id="art-id" value=#{fromSqlKey artId}>
     <div class="section">
         <div class="row">
             <div class="col offset-m4 m4 s12">
@@ -21,16 +23,16 @@
             <i class="large material-icons">sentiment_neutral
         <ul>
            <li>
-                <a class="btn-floating red">
+                <a class="btn-floating red reaction">
                     <i class="material-icons">favorite
             <li>
-                <a class="btn-floating green">
+                <a class="btn-floating green reaction">
                     <i class="material-icons">sentiment_very_satisfied
             <li>
-                <a class="btn-floating yellow">
+                <a class="btn-floating yellow reaction">
                     <i class="material-icons">lightbulb_outline
             <li>
-                <a class="btn-floating grey">
+                <a class="btn-floating grey reaction">
                     <i class="material-icons">sentiment_very_dissatisfied
    
       
