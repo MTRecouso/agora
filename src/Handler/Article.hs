@@ -13,6 +13,7 @@ import Data.List ((!!))
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
 import Funcs
+import Text.Julius(rawJS)
 
 postArticleR :: Handler Value
 postArticleR = do
@@ -70,6 +71,7 @@ getArticleByIdR artId = do
     article <- runDB $ get404 artId
     author <- (runDB $ selectFirst [UserSyId ==. (articleAuthor article)] [])
     hasFavorite <- runDB $ getBy (UniqueFav userId artId)
+    favoriteId <- return $ maybe "" (\fav -> show $ fromSqlKey $ entityKey fav) hasFavorite
     listArticleFavorites <- runDB $ selectList [FavoriteArticle ==. artId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. artId] []
     pc <-return $ $(widgetFile "article")

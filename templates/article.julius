@@ -3,17 +3,39 @@
     $('.collapsible').collapsible();
     const user_id = parseInt($('#user-id').val())
     const art_id = parseInt($('#art-id').val())
+    let fav_id = #{rawJS favoriteId};
     const view = JSON.stringify({user: user_id, article: art_id})
-    console.log(view)
     $.post('@{ViewR}',view, function(res){
-      console.log(res.resp)
+
     })
 
     $( '#favorite' ).click(function(event) {
-      const favorite = JSON.stringify({user: user_id, article: art_id})
-      $.post('@{FavoriteR}',favorite, function(res){
-        console.log(res.id)
-      })
+      if( $(this).hasClass('favorited') ){
+        const r_id = parseInt(fav_id) ;
+        $.ajax({
+          url: '/favorite/' + r_id,
+          type: 'DELETE',
+          success: function(result) {
+            $("#favorite")
+              .removeClass('favorited')
+              .removeClass('red')
+              .addClass('grey');
+            $( '#favorite:only-child' ).addClass( 'red-text' );
+            fav_id = ""
+          }
+        });
+      }
+      else{
+        const favorite = JSON.stringify({user: user_id, article: art_id})
+        $.post('@{FavoriteR}',favorite, function(res){
+          $("#favorite")
+            .addClass('favorited')
+            .addClass('red')
+            .removeClass('grey');
+          $( '#favorite:only-child' ).removeClass( 'red-text' );
+          fav_id = res.id
+        })
+      }
     });
   });
 
