@@ -17,10 +17,22 @@ import Text.Julius(rawJS)
 
 postArticleR :: Handler Value
 postArticleR = do
-    article <- requireJsonBody :: Handler Article
-    aId <- runDB $ insert article
-    sendStatusJSON created201 (object["id" .= fromSqlKey aId])
+            article <- requireJsonBody :: Handler Article
+            aId <- runDB $ insert article
+            sendStatusJSON created201 (object["id" .= fromSqlKey aId])
 
+
+getArticleR :: Handler Html
+getArticleR = do
+    tags <- runDB $ selectList [] [Asc TagName]
+    pc <- return $ $(widgetFile "postarticle")
+    defaultLayout $ do
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
+        addStylesheetRemote "https://fonts.googleapis.com/icon?family=Material+Icons"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"
+        addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"
+        setTitle "Ágora"
+        $(widgetFile "layout")
 
 getArticlesToUser :: Handler Html
 getArticlesToUser = do
@@ -53,11 +65,6 @@ getArticlesToUser = do
         setTitle "Ágora"
         $(widgetFile "layout")
 
--- Stub for future form route
-getArticleR :: Handler Value
-getArticleR = do
-    sendStatusJSON noContent204 (object[])
-
 getArticleByIdR :: ArticleId -> Handler Html
 getArticleByIdR artId = do
     maybeId <- lookupSession "ID"
@@ -71,7 +78,7 @@ getArticleByIdR artId = do
     article <- runDB $ get404 artId
     author <- (runDB $ selectFirst [UserSyId ==. (articleAuthor article)] [])
     hasFavorite <- runDB $ getBy (UniqueFav userId artId)
-    favoriteId <- return $ maybe "" (\fav -> show $ fromSqlKey $ entityKey fav) hasFavorite
+    favoriteId <- return $ maybe "0" (\fav -> show $ fromSqlKey $ entityKey fav) hasFavorite
     listArticleFavorites <- runDB $ selectList [FavoriteArticle ==. artId] []
     listArticleViews <- runDB $ selectList [ViewArticle ==. artId] []
     pc <-return $ $(widgetFile "article")
