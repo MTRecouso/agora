@@ -13,7 +13,10 @@
                         <a href=@{ArticleByAuthorR $ articleAuthor article}>
                             $forall authorSingle <- author
                                 #{userSyUsername $ entityVal authorSingle}
-    <div class="divider">           
+    <div class="divider"> 
+    <div class="row">
+        <div class="col s12">
+            <img class="responsive-img" src="/static/img/#{articleImage article}">          
     <div class="row">
             <div class="col s12">
                 <p style="white-space: pre-wrap">#{articleContent article}
