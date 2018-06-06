@@ -10,7 +10,6 @@ Article json
     content Text
     author UserSyId
     tag TagId
-    date Day 
     deriving Show
 
 Tag

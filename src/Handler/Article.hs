@@ -8,18 +8,35 @@ module Handler.Article where
 
 import Import
 import Network.HTTP.Types.Status
-import Database.Persist.Postgresql
+import Database.Persist.Postgresql as DB
 import Data.List ((!!))
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
+import Data.Maybe (fromJust)
+import Data.Text as T (replace)
 import Funcs
 import Text.Julius(rawJS)
 
 postArticleR :: Handler Value
 postArticleR = do
-            article <- requireJsonBody :: Handler Article
+    maybeTitle <- lookupPostParam "title"
+    maybeContent <- lookupPostParam "content"
+    maybeTag <- lookupPostParam "tag"
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+                    (Just idt) -> do
+                        return idt
+                    _ -> do
+                        redirect LoginPageR
+    userId <- return $ textToKey idText
+    hasReqParam <- return $ hasRequiredParameters [maybeTag, maybeContent, maybeTitle]
+    case hasReqParam of
+        False -> do
+            invalidArgs $ [(pack "Formato inválido")]
+        True -> do
+            article <- return $ Article (fromJust maybeTitle) (fromJust maybeContent) userId (textToKey $ fromJust maybeTag)
             aId <- runDB $ insert article
-            sendStatusJSON created201 (object["id" .= fromSqlKey aId])
+            redirect ArticlesToUser
 
 
 getArticleR :: Handler Html
@@ -134,7 +151,7 @@ getArticleByAuthorR authorId = do
 putArticleByIdR :: ArticleId -> Handler Value
 putArticleByIdR artId = do
     article <- requireJsonBody :: Handler Article
-    runDB $ replace artId article
+    runDB $ DB.replace artId article
     sendStatusJSON noContent204 (object[])
 
 deleteArticleByIdR :: ArticleId -> Handler Value
