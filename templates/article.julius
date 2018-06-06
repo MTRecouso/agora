@@ -19,8 +19,9 @@
             $("#favorite")
               .removeClass('favorited')
               .removeClass('red')
-              .addClass('grey');
-            $( '#favorite:only-child' ).addClass( 'red-text' );
+              .addClass('grey')
+              .addClass('lighten-2')
+            $( '#fav-icon' ).addClass( 'red-text' );
             fav_id = ""
           }
         });
@@ -31,8 +32,9 @@
           $("#favorite")
             .addClass('favorited')
             .addClass('red')
-            .removeClass('grey');
-          $( '#favorite:only-child' ).removeClass( 'red-text' );
+            .removeClass('grey')
+            .removeClass('lighten-2');
+          $( '#fav-icon' ).removeClass( 'red-text' );
           fav_id = res.id
         })
       }

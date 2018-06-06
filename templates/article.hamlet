@@ -16,13 +16,13 @@
     <div class="divider">           
     <div class="row">
             <div class="col s12">
-                <p>#{articleContent article}
+                <p style="white-space: pre-wrap">#{articleContent article}
 
     <div class="fixed-action-btn">
         $maybe favorite <- hasFavorite
             <a id="favorite" class="btn-floating btn-large red favorited">
-                <i class="material-icons">favorite
+                <i id="fav-icon" class="material-icons">favorite
         $nothing
-            <a id="favorite" class="btn-floating btn-large grey">
-                <i class="material-icons red-text">favorite
+            <a id="favorite" class="btn-floating btn-large grey lighten-2">
+                <i id="fav-icon" class="material-icons red-text">favorite
       
