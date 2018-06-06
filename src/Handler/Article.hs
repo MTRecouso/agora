@@ -22,6 +22,14 @@ postArticleR = do
     maybeTitle <- lookupPostParam "title"
     maybeContent <- lookupPostParam "content"
     maybeTag <- lookupPostParam "tag"
+    maybeImage <- lookupFile "image"
+    filePath <- case maybeImage of
+        (Just img) -> do
+            fp <- return $ "static/img/" ++ (unpack $ fileName img)
+            liftIO $ fileMove img fp
+            return fp
+        Nothing -> do
+            return "static/img/default.jpg" 
     maybeId <- lookupSession "ID"
     idText <- case maybeId of
                     (Just idt) -> do
@@ -34,7 +42,7 @@ postArticleR = do
         False -> do
             invalidArgs $ [(pack "Formato inválido")]
         True -> do
-            article <- return $ Article (fromJust maybeTitle) (fromJust maybeContent) userId (textToKey $ fromJust maybeTag)
+            article <- return $ Article (fromJust maybeTitle) (fromJust maybeContent) userId (textToKey $ fromJust maybeTag) filePath
             aId <- runDB $ insert article
             redirect ArticlesToUser
 

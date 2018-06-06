@@ -10,6 +10,7 @@ Article json
     content Text
     author UserSyId
     tag TagId
+    image String
     deriving Show
 
 Tag
