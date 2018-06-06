@@ -15,11 +15,11 @@
                                 <i class="material-icons black-text">search
                             <i class="material-icons">close
                 <li>
-                    <a href="#" class="black-text">
+                    <a href=@{ArticlesToUser} class="black-text">
                         <i class="material-icons left black-text">dashboard
                         Explorar
                 <li>
-                    <a href="#" class="black-text">
+                    <a href=@{ArticleByAuthorR userId} class="black-text">
                         <i class="material-icons left black-text">library_books
                         Meus textos
                 <li>
@@ -36,11 +36,11 @@
                     <label class="label-icon" for="search">
                     <i class="material-icons black-text">search
         <li>
-            <a href="#" class="">
+            <a href=@{ArticlesToUser} class="">
                 <i class="material-icons left black-text">dashboard
                 Explorar
         <li>
-            <a href="#" class="black-text">
+            <a href=@{ArticleByAuthorR userId} class="black-text">
                 <i class="material-icons left black-text">library_books
                 Meus textos
         <li>

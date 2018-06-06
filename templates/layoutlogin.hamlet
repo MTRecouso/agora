@@ -7,11 +7,11 @@
                 <i class="black-text material-icons">menu
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    <a href="#" class="black-text">
+                    <a href=@{LoginPageR} class="black-text">
                         <i class="material-icons left black-text">dashboard
                         Login
                 <li>
-                    <a href="#" class="black-text">
+                    <a href=@{SignupPageR} class="black-text">
                         <i class="material-icons left black-text">library_books
                         Cadastre-se
     <ul id="slide-out" class="sidenav">
@@ -19,11 +19,11 @@
             <span class="black-text name">Ágora
         <li>
         <li>
-            <a href="#" class="">
+            <a href=@{LoginPageR} class="">
                 <i class="material-icons left black-text">dashboard
                 Login
         <li>
-            <a href="#" class="black-text">
+            <a href=@{SignupPageR} class="black-text">
                 <i class="material-icons left black-text">library_books
                 Cadastre-se
 <main>

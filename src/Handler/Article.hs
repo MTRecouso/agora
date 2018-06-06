@@ -27,9 +27,9 @@ postArticleR = do
         (Just img) -> do
             fp <- return $ "static/img/" ++ (unpack $ fileName img)
             liftIO $ fileMove img fp
-            return fp
+            return $ unpack $ fileName img
         Nothing -> do
-            return "static/img/default.jpg" 
+            return "default.jpg" 
     maybeId <- lookupSession "ID"
     idText <- case maybeId of
                     (Just idt) -> do
@@ -50,6 +50,13 @@ postArticleR = do
 getArticleR :: Handler Html
 getArticleR = do
     tags <- runDB $ selectList [] [Asc TagName]
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+                    (Just idt) -> do
+                        return idt
+                    _ -> do
+                        redirect LoginPageR
+    userId <- return $ textToKey idText
     pc <- return $ $(widgetFile "postarticle")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
@@ -127,7 +134,13 @@ getArticleSearchR = do
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesFavorites <- runDB $ selectList [ViewArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
-    --to do: change navbar routes when user session is implemented
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+        (Just idt) -> do
+            return idt
+        _ -> do
+            redirect LoginPageR
+    userId <- return $ textToKey idText
     pc <-return $ $(widgetFile "searchresults")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
@@ -144,6 +157,13 @@ getArticleByAuthorR authorId = do
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] []
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+        (Just idt) -> do
+            return idt
+        _ -> do
+            redirect LoginPageR
+    userId <- return $ textToKey idText
     pc <-return $ $(widgetFile "author")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
