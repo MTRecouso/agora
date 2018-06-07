@@ -1,0 +1,19 @@
+main{
+    background-image: url(@{StaticR bglogin_jpg});
+    background-position: center; 
+    background-size: cover;
+}
+
+.enter{
+    padding-top: 3.0rem;
+    padding-bottom: 3.0rem
+}
+
+.border-circle{
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.opacity-95{
+    opacity: 0.95;
+}

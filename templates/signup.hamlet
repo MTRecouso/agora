@@ -1,6 +1,7 @@
-<div class="section enter">
+<div class="container">
+    <div class="enter">
             <div class="row">
-                <div class="col s12 m6 offset-m3 offset-l3 l6 z-depth-1 white semi-opaque">
+                <div class="col s12 m8 offset-m2 offset-l1 l10 z-depth-1 white opacity-95 border-circle">
                     <div class="section">
                         <h1 class="center-align">Cadastrar
                         $maybe msg <- maybeMsg
