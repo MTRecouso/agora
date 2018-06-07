@@ -1,21 +1,25 @@
-<main>
-    <div class="section">
-        <div class="row">
-            <div class="col offset-m4 m4 s12">       
-                <div class="card horizontal">
-                    <div class="card-image">
-                        <i class="material-icons large">person
+
+<div class="section">
+    <div class="row">
+        <div class="col offset-m4 m4 s12">       
+            <div class="card horizontal">
+                <div class="card-image">
+                    <i class="material-icons large">person
+                <div class="card-content">
+                    #{userSyUsername $ author}      
+<div class="divider">
+<p class="center-align greeting">Artigos de #{userSyUsername $ author}
+$forall article <- articles
+    <div class="row">
+        <div class="col s12">
+            <div class="card responsive-horizontal">
+                <div class="card-image">
+                     <img src="/static/img/#{articleImage $ entityVal article}">
+                <div class="card-stacked">
                     <div class="card-content">
-                        #{userSyUsername $ author}      
-    <div class="divider">
-    <p class="center-align greeting">Artigos de #{userSyUsername $ author}
-    $forall article <- articles
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <a href=@{ArticleByIdR $ entityKey article}> 
-                    <h3 class="black-text center-align">#{articleTitle $ entityVal article}
-                    <img class="responsive-img" src="/static/img/#{articleImage $ entityVal article}"> 
-                <p>#{articleContent $ entityVal article}
-    <div class="fixed-action-btn">
-        <a href=@{ArticleR} class="btn-floating btn-large green">
-            <i class="large material-icons">mode_edit
+                        <a href=@{ArticleByIdR $ entityKey article}> 
+                            <h3 class="black-text center-align">#{articleTitle $ entityVal article} 
+                        <p>#{textSnippet $ articleContent $ entityVal article}
+<div class="fixed-action-btn">
+    <a href=@{ArticleR} class="btn-floating btn-large green">
+        <i class="large material-icons">mode_edit
