@@ -1,0 +1,19 @@
+main{
+    background-image: url(@{StaticR bgnewarticle2_jpg});
+    background-position: center; 
+    background-size: cover;
+    padding-bottom: 25px;
+}
+
+.send-article{
+    padding-bottom: 10px;
+}
+
+.border-circle{
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.opacity-97{
+    opacity: 0.97;
+}
