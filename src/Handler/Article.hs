@@ -9,7 +9,7 @@ module Handler.Article where
 import Import
 import Network.HTTP.Types.Status
 import Database.Persist.Postgresql as DB
-import Data.List ((!!))
+import Data.List as L ((!!), zip)
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
 import Data.Maybe (fromJust)
@@ -68,12 +68,12 @@ getArticleR = do
 
 getArticlesToUser :: Handler Html
 getArticlesToUser = do
-    maybeId <- lookupSession "ID"
-    idText <- case maybeId of
+    (Just idText) <- lookupSession "ID"
+   {- idText <- case maybeId of
                     (Just idt) -> do
                         return idt
                     _ -> do
-                        redirect LoginPageR
+                        redirect LoginPageR -}
     userId <- return $ textToKey idText
     user <- runDB $ get404 userId
     views <- runDB $ selectList [ViewUser ==. userId] []
@@ -133,7 +133,9 @@ getArticleSearchR = do
     articles <- runDB $ selectList [ArticleTitle `like` searchText][]
     artIds <- return $ fmap(\article -> entityKey article) articles
     listArticlesFavorites <- runDB $ selectList [ViewArticle <-. artIds] []
-    listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
+    listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] [Asc ViewArticle]
+    orderedArticlesViews <- return $ groupBy (\v v2 -> (viewArticle $ entityVal v) == (viewArticle $ entityVal v2)) listArticlesViews
+    articleswithViews <- return $ L.zip orderedArticlesViews articles 
     maybeId <- lookupSession "ID"
     idText <- case maybeId of
         (Just idt) -> do

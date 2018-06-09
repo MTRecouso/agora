@@ -23,7 +23,21 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 
 instance Yesod App where
     makeLogger = return . appLogger
+    authRoute _ = Just LoginPageR
+    isAuthorized LoginPageR _ = return Authorized
+    isAuthorized SignupPageR _ = return Authorized
+    isAuthorized UserSyR _ = return Authorized
+    isAuthorized UserLoginR _ = return Authorized
+    isAuthorized (StaticR _) _ = return Authorized
+    isAuthorized _ _ = ehUsuario
 
+ehUsuario :: Handler AuthResult
+ehUsuario = do
+    maybeId <- lookupSession "ID"
+    case maybeId of
+        Nothing -> return AuthenticationRequired 
+        Just _ -> return Authorized
+    
 instance YesodPersist App where
     type YesodPersistBackend App = SqlBackend
     runDB action = do
