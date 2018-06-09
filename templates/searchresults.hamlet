@@ -6,7 +6,7 @@
 <div class="divider">
 <div class="container-90">
     <div class="section">
-        $forall (views, article) <- articleswithViews
+        $forall article <- articles
             <div class="row">
                 <div class="col s12">
                     <div class="card hoverable responsive-horizontal">
@@ -17,7 +17,8 @@
                                 <a href=@{ArticleByIdR $ entityKey article}> 
                                     <span class="black-text article-title center-align">#{articleTitle $ entityVal article} 
                                 <p>#{textSnippet $ articleContent $ entityVal article}
-                                <span class="grey-text">#{length views} Visualizações
+                                <span class="grey-text">#{length $ articleFavs article listArticlesFavorites} Favoritos
+                                <span class="grey-text">#{length $ articleViews article listArticlesViews} Visualizações
 <div class="fixed-action-btn">
     <a href=@{ArticleR} class="btn-floating btn-large green">
         <i class="large material-icons">mode_edit

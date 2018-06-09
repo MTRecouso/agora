@@ -23,5 +23,5 @@
 }
 
 .article-snippet{
-    height: 500px;
+    height: 550px;
 }

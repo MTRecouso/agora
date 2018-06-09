@@ -9,7 +9,7 @@ module Handler.Article where
 import Import
 import Network.HTTP.Types.Status
 import Database.Persist.Postgresql as DB
-import Data.List as L ((!!), zip)
+import Data.List (!!)
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
 import Data.Maybe (fromJust)
@@ -30,12 +30,7 @@ postArticleR = do
             return $ unpack $ fileName img
         Nothing -> do
             return "default.jpg" 
-    maybeId <- lookupSession "ID"
-    idText <- case maybeId of
-                    (Just idt) -> do
-                        return idt
-                    _ -> do
-                        redirect LoginPageR
+    (Just idText) <- lookupSession "ID"
     userId <- return $ textToKey idText
     hasReqParam <- return $ hasRequiredParameters [maybeTag, maybeContent, maybeTitle]
     case hasReqParam of
@@ -50,12 +45,7 @@ postArticleR = do
 getArticleR :: Handler Html
 getArticleR = do
     tags <- runDB $ selectList [] [Asc TagName]
-    maybeId <- lookupSession "ID"
-    idText <- case maybeId of
-                    (Just idt) -> do
-                        return idt
-                    _ -> do
-                        redirect LoginPageR
+    (Just idText) <- lookupSession "ID"
     userId <- return $ textToKey idText
     pc <- return $ $(widgetFile "postarticle")
     defaultLayout $ do
@@ -69,11 +59,6 @@ getArticleR = do
 getArticlesToUser :: Handler Html
 getArticlesToUser = do
     (Just idText) <- lookupSession "ID"
-   {- idText <- case maybeId of
-                    (Just idt) -> do
-                        return idt
-                    _ -> do
-                        redirect LoginPageR -}
     userId <- return $ textToKey idText
     user <- runDB $ get404 userId
     views <- runDB $ selectList [ViewUser ==. userId] []
@@ -88,6 +73,10 @@ getArticlesToUser = do
             tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
             mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
             runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10]
+    
+    artIds <- return $ fmap(\article -> entityKey article) pageArticles
+    listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] [Asc FavoriteArticle]
+    listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] [Asc ViewArticle]
     pc <- return $ $(widgetFile "mainpage")
     defaultLayout $ do
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
@@ -99,12 +88,7 @@ getArticlesToUser = do
 
 getArticleByIdR :: ArticleId -> Handler Html
 getArticleByIdR artId = do
-    maybeId <- lookupSession "ID"
-    idText <- case maybeId of
-                    (Just idt) -> do
-                        return idt
-                    _ -> do
-                        redirect LoginPageR
+    (Just idText) <- lookupSession "ID"
     userId <- return $ (textToKey idText :: UserSyId)
     user <- runDB $ get404 userId
     article <- runDB $ get404 artId
@@ -132,16 +116,9 @@ getArticleSearchR = do
     searchText <- return $ fromMaybe " " searchParam
     articles <- runDB $ selectList [ArticleTitle `like` searchText][]
     artIds <- return $ fmap(\article -> entityKey article) articles
-    listArticlesFavorites <- runDB $ selectList [ViewArticle <-. artIds] []
+    listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] [Asc FavoriteArticle]
     listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] [Asc ViewArticle]
-    orderedArticlesViews <- return $ groupBy (\v v2 -> (viewArticle $ entityVal v) == (viewArticle $ entityVal v2)) listArticlesViews
-    articleswithViews <- return $ L.zip orderedArticlesViews articles 
-    maybeId <- lookupSession "ID"
-    idText <- case maybeId of
-        (Just idt) -> do
-            return idt
-        _ -> do
-            redirect LoginPageR
+    (Just idText) <- lookupSession "ID"
     userId <- return $ textToKey idText
     pc <-return $ $(widgetFile "searchresults")
     defaultLayout $ do
@@ -157,14 +134,9 @@ getArticleByAuthorR authorId = do
     author <- runDB $ get404 authorId     
     articles <- runDB $ selectList [ArticleAuthor ==. authorId] []
     artIds <- return $ fmap(\article -> entityKey article) articles
-    listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] []
-    listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] []
-    maybeId <- lookupSession "ID"
-    idText <- case maybeId of
-        (Just idt) -> do
-            return idt
-        _ -> do
-            redirect LoginPageR
+    listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] [Asc FavoriteArticle]
+    listArticlesViews <- runDB $ selectList [ViewArticle <-. artIds] [Asc ViewArticle]
+    (Just idText) <- lookupSession "ID"
     userId <- return $ textToKey idText
     pc <-return $ $(widgetFile "author")
     defaultLayout $ do
@@ -175,8 +147,6 @@ getArticleByAuthorR authorId = do
         setTitle "Ágora"
         $(widgetFile "layout")
 
---getArticleByTag :: TagId -> Handler Value
---May add this in the future if the tag feature gets implemented
 
 putArticleByIdR :: ArticleId -> Handler Value
 putArticleByIdR artId = do
