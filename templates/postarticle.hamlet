@@ -29,7 +29,7 @@
             <div class="file-field input-field col s12">
                 <div class="btn">
                     <span>
-                        File
+                        Imagem
                     <input type="file" name="image">
                 <div class="file-path-wrapper">
                     <input class="file-path validate" type="text">

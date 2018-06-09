@@ -1,25 +1,27 @@
-<main>
-    <input type="hidden" id="user-id" value=#{fromSqlKey userId}>
-    <input type="hidden" id="art-id" value=#{fromSqlKey artId}>
-    <div class="section">
+
+<input type="hidden" id="user-id" value=#{fromSqlKey userId}>
+<input type="hidden" id="art-id" value=#{fromSqlKey artId}>
+<div class="row">
+<div class="container white border-circle article-box">
         <div class="row">
-            <div class="col offset-m4 m4 s12">
-                <h2 class="center-align">#{articleTitle article}
-            <div class="col m4 s12">           
-                <div class="card horizontal">
-                    <div class="card-image">
-                        <i class="material-icons large">person
-                    <div class="card-content">
-                        <a href=@{ArticleByAuthorR $ articleAuthor article}>
-                            $forall authorSingle <- author
-                                #{userSyUsername $ entityVal authorSingle}
-    <div class="divider"> 
-    <div class="row">
-        <div class="col s12">
-            <img class="responsive-img" src="/static/img/#{articleImage article}">          
-    <div class="row">
+            <div class="col s12">
+                <h3 class="center-align">#{articleTitle article}
+        <div class="row">
+            <div class="col s12">
+                <img class="responsive-img" src="/static/img/#{articleImage article}">          
+        <div class="row">
             <div class="col s12">
                 <p style="white-space: pre-wrap">#{articleContent article}
+        <div class="row">
+            <div class="col s12 m4">           
+                <span class="center-align">    
+                    Escrito por: 
+                <a href=@{ArticleByAuthorR $ articleAuthor article}>      
+                    $forall authorSingle <- author
+                        #{userSyUsername $ entityVal authorSingle}
+            <div class="col s12 offset-m4 m4">
+                <span class="grey-text">#{length listArticleViews} Visualizações
+                <span class="grey-text">#{length listArticleFavorites} Favoritos
 
     <div class="fixed-action-btn">
         $maybe favorite <- hasFavorite

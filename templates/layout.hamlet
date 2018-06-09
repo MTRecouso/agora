@@ -1,31 +1,32 @@
 
 <header>
-    <nav class="main-nav">
-        <div class="nav-wrapper grey lighten-4">
-            <div class="brand-logo">
-                <span class="black-text">
-            <a href="#" data-target="slide-out" class="sidenav-trigger">
-                <i class="black-text material-icons">menu
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>
-                    <form action=@{ArticleSearchR}>
-                        <div class="input-field">
-                            <input name="search" type="search" placeholder="Pesquisar" required>
-                            <label class="label-icon" for="side-search">
-                                <i class="material-icons black-text">search
-                            <i class="material-icons">close
-                <li>
-                    <a href=@{ArticlesToUser} class="black-text">
-                        <i class="material-icons left black-text">dashboard
-                        Explorar
-                <li>
-                    <a href=@{ArticleByAuthorR userId} class="black-text">
-                        <i class="material-icons left black-text">library_books
-                        Meus textos
-                <li>
-                    <a href=@{UserLogoutR} class="black-text">
-                        <i class="material-icons left black-text">exit_to_app
-                        Logout
+    <div class="navbar-fixed">
+        <nav class="main-nav">
+            <div class="nav-wrapper grey lighten-4">
+                <div class="brand-logo">
+                    <span class="black-text">
+                <a href="#" data-target="slide-out" class="sidenav-trigger">
+                    <i class="black-text material-icons">menu
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <form action=@{ArticleSearchR}>
+                            <div class="input-field">
+                                <input name="search" type="search" placeholder="Pesquisar" required>
+                                <label class="label-icon" for="side-search">
+                                    <i class="material-icons black-text">search
+                                <i class="material-icons">close
+                    <li>
+                        <a href=@{ArticlesToUser} class="black-text">
+                            <i class="material-icons left black-text">dashboard
+                            Explorar
+                    <li>
+                        <a href=@{ArticleByAuthorR userId} class="black-text">
+                            <i class="material-icons left black-text">library_books
+                            Meus textos
+                    <li>
+                        <a href=@{UserLogoutR} class="black-text">
+                            <i class="material-icons left black-text">exit_to_app
+                            Logout
     <ul id="slide-out" class="sidenav">
         <li>
             <span class="black-text name">Ágora
@@ -45,8 +46,8 @@
                 Meus textos
         <li>
             <a href=@{UserLogoutR} class="black-text">
-                        <i class="material-icons left black-text">exit_to_app
-                        Logout
+                <i class="material-icons left black-text">exit_to_app
+                Logout
 <main>
     ^{pc}
 <footer class="page-footer grey lighten-4">
