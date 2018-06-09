@@ -5,3 +5,23 @@
 .greeting{
     font-size: 1.2rem
 }
+
+.container-90{
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+.article-title{
+    display: block;
+    font-size: 2.4rem;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    line-height: 110%;
+}
+
+.article-snippet{
+    height: 500px;
+}
