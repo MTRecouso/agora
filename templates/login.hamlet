@@ -4,9 +4,7 @@
     <div class="row">
         <div class="col s12 m6 offset-m3 offset-l3 l6 z-depth-1 white opacity-95 border-circle">
             <div class="section">
-                <h1 class="center-align">Ágora
-                <p>praça principal das antigas cidades gregas, local em que se instalava o mercado e 
-                que muitas vezes servia para a realização das assembleias do povo
+                <h1 class="center-align">Ágora - Login
                 $maybe msg <- maybeMsg
                     <div class="red lighten-4">
                         <p>#{msg}</p>

@@ -3,7 +3,7 @@
             <div class="row">
                 <div class="col s12 m8 offset-m2 offset-l1 l10 z-depth-1 white opacity-95 border-circle">
                     <div class="section">
-                        <h1 class="center-align">Cadastrar
+                        <h1 class="center-align">Ágora - Cadastro
                         $maybe msg <- maybeMsg
                             <div class="red lighten-4">
                                 <p>#{msg}</p>
