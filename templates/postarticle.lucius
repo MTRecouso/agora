@@ -2,6 +2,7 @@ main{
     background-image: url(@{StaticR bgnewarticle2_jpg});
     background-position: center; 
     background-size: cover;
+    background-attachment: fixed;
     padding-bottom: 25px;
 }
 
