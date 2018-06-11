@@ -1,6 +1,3 @@
-
-<input type="hidden" id="user-id" value=#{fromSqlKey userId}>
-<input type="hidden" id="art-id" value=#{fromSqlKey artId}>
 <div class="row">
 <div class="container white border-circle article-box">
         <div class="row">

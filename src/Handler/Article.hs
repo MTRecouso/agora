@@ -66,13 +66,13 @@ getArticlesToUser = do
     viewedArticles  <- runDB $ selectList [ArticleId <-.viewarticles] [LimitTo 30]
     pageArticles <- case viewedArticles of
         [] -> do
-            runDB $ selectList [] [Desc ArticleId, LimitTo 10]
+            runDB $ selectList [] [Desc ArticleId, LimitTo 9]
 
         _ -> do 
             tagsByFrequence <- return $ sort $ fmap (\tag -> articleTag $ entityVal tag) viewedArticles
             tagsDesc <- return $ reverse $ (sortOn length (group tagsByFrequence))
             mostViewedTags <- return $ fmap(\x -> x !! 0) $ take 3 tagsDesc 
-            runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 10]
+            runDB $ selectList [ArticleTag <-. mostViewedTags] [LimitTo 9]
     
     artIds <- return $ fmap(\article -> entityKey article) pageArticles
     listArticlesFavorites <- runDB $ selectList [FavoriteArticle <-. artIds] [Asc FavoriteArticle]
