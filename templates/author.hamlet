@@ -6,22 +6,25 @@
 <div class="divider">
 <div class="container-90">
     <div class="section">
-        $forall article <- articles
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable responsive-horizontal" id="article-#{fromSqlKey $ entityKey article}">
-                        <div class="card-image">
-                            <img src="/static/img/#{articleImage $ entityVal article}">
-                        <div class="card-stacked">
-                            <div class="card-content">
-                                <a href=@{ArticleByIdR $ entityKey article}> 
-                                    <span class="black-text article-title center-align">#{articleTitle $ entityVal article} 
-                                <p>#{textSnippet $ articleContent $ entityVal article}
-                                <span class="grey-text">#{length $ articleFavs article listArticlesFavorites} Favoritos
-                                <span class="grey-text">#{length $ articleViews article listArticlesViews} Visualizações
-                            $if userIsAuthor article userId
-                                <div class="card-action">
-                                    <a class="delete" id="delete-#{fromSqlKey $ entityKey article}">Excluir
+        $if length articles > 0
+            $forall article <- articles
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card hoverable responsive-horizontal" id="article-#{fromSqlKey $ entityKey article}">
+                            <div class="card-image">
+                                <img src="/static/img/#{articleImage $ entityVal article}">
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <a href=@{ArticleByIdR $ entityKey article}> 
+                                        <span class="black-text card-title article-title center-align">#{articleTitle $ entityVal article} 
+                                    <p>#{textSnippet $ articleContent $ entityVal article}
+                                    <span class="grey-text">#{length $ articleFavs article listArticlesFavorites} Favoritos
+                                    <span class="grey-text">#{length $ articleViews article listArticlesViews} Visualizações
+                                $if userIsAuthor article userId
+                                    <div class="card-action">
+                                        <a class="delete" id="delete-#{fromSqlKey $ entityKey article}">Excluir
+        $else
+            <h6 class="center-align greeting">Nenhum artigo encontrado
 <div class="fixed-action-btn">
     <a href=@{ArticleR} class="btn-floating btn-large green">
         <i class="large material-icons">mode_edit

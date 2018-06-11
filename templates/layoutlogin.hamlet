@@ -1,30 +1,30 @@
 <header>
-    <nav class="main-nav">
-        <div class="nav-wrapper grey lighten-4">
-            <div class="brand-logo">
-                <span class="black-text">
-            <a href="#" data-target="slide-out" class="sidenav-trigger">
-                <i class="black-text material-icons">menu
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>
-                    <a href=@{LoginPageR} class="black-text">
-                        <i class="material-icons left black-text">dashboard
-                        Login
-                <li>
-                    <a href=@{SignupPageR} class="black-text">
-                        <i class="material-icons left black-text">library_books
-                        Cadastre-se
+    <div class="navbar-fixed">
+        <nav class="main-nav">
+            <div class="nav-wrapper grey lighten-4">
+                <div class="brand-logo">
+                    <span class="black-text">
+                <a href="#" data-target="slide-out" class="sidenav-trigger">
+                    <i class="black-text material-icons">menu
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a href=@{LoginPageR} class="black-text">
+                            <i class="material-icons left black-text">person
+                            Login
+                    <li>
+                        <a href=@{SignupPageR} class="black-text">
+                            <i class="material-icons left black-text">person_add
+                            Cadastre-se
     <ul id="slide-out" class="sidenav">
         <li>
             <span class="black-text name">Ágora
         <li>
-        <li>
             <a href=@{LoginPageR} class="">
-                <i class="material-icons left black-text">dashboard
+                <i class="material-icons left black-text">person
                 Login
         <li>
             <a href=@{SignupPageR} class="black-text">
-                <i class="material-icons left black-text">library_books
+                <i class="material-icons left black-text">person_add
                 Cadastre-se
 <main>
     ^{pc}
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col l6 s12">
             <h5 class="black-text">Ágora
-            <p class="black-text">O Ágora é um espaço para pessoas que queiram compartilhar seus conhecimentos com o mundo
+            <p class="black-text">O Ágora é um espaço para pessoas que queiram compartilhar suas ideias sobre arte, cultura e filosofia
         <div class="col l4 offset-l2 s12">
             <h5 class="black-text">Grupo
             <ul>
