@@ -24,6 +24,9 @@ textToKey idText = toSqlKey (read (unpack idText) :: Int64)
 textSnippet :: Text -> Text
 textSnippet content = (take 300 content) ++ pack "..."
 
+userIsAuthor :: Entity Article -> UserSyId -> Bool
+userIsAuthor article uid = (fromSqlKey $ articleAuthor $ entityVal article) == (fromSqlKey uid)
+
 articleFavs :: Entity Article -> [Entity Favorite] -> [Int]
 articleFavs article favs =  elemIndices (fromSqlKey $ entityKey article) (map(\fav -> fromSqlKey $ favoriteArticle $ entityVal fav) favs)
 

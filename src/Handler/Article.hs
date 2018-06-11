@@ -9,7 +9,7 @@ module Handler.Article where
 import Import
 import Network.HTTP.Types.Status
 import Database.Persist.Postgresql as DB
-import Data.List (!!)
+import Data.List ((!!))
 import Data.Text.Encoding as TE
 import Data.CaseInsensitive as CI
 import Data.Maybe (fromJust)
@@ -156,5 +156,13 @@ putArticleByIdR artId = do
 
 deleteArticleByIdR :: ArticleId -> Handler Value
 deleteArticleByIdR artId = do
-    runDB $ deleteCascade artId
+    (Just idText) <- lookupSession "ID"
+    userId <- return $ (textToKey idText :: UserSyId)
+    article <- runDB $ get404 artId
+    isAuthor <- return $ (fromSqlKey  $ articleAuthor article) == (fromSqlKey userId)
+    case isAuthor of
+        True -> do
+            runDB $ deleteCascade artId
+        _ -> do
+            sendStatusJSON unauthorized401 (object[])
     sendStatusJSON noContent204 (object[])

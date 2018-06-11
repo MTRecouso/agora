@@ -1,0 +1,16 @@
+$(document).ready(function(){
+    $( '.delete' ).click(function(event) {
+        if(confirm ("Deseja realmente deletar esse artigo?")){
+            const btn_id = event.currentTarget.id
+            art_id = parseInt(btn_id.slice(7));
+            $.ajax({
+                url: '/article/' + art_id,
+                type: 'DELETE',
+                success: function(result) { 
+                    $('#article-' + art_id).remove();
+                    $('html, body').animate({scrollTop: '0px'}, 300);
+                }
+            });
+        }
+    });
+ });
