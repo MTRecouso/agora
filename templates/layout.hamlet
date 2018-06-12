@@ -3,8 +3,8 @@
     <div class="navbar-fixed">
         <nav class="main-nav">
             <div class="nav-wrapper grey lighten-4">
-                <div class="brand-logo">
-                    <span class="black-text">
+                <div class="brand-logo agora-logo">
+                    <span class="black-text">Ágora
                 <a href="#" data-target="slide-out" class="sidenav-trigger">
                     <i class="black-text material-icons">menu
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -29,7 +29,7 @@
                             Logout
     <ul id="slide-out" class="sidenav">
         <li>
-            <span class="black-text name">Ágora
+            <span class="black-text agora-logo">Ágora
         <li>
             <form action=@{ArticleSearchR}>
                 <div class="input-field">
